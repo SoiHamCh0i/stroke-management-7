@@ -3,21 +3,22 @@ package com.example.stroke_management_7.activities
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.example.stroke_management_7.R
 import com.example.stroke_management_7.databinding.ActivityMainBinding
 import com.example.stroke_management_7.mqtt.Connection
 import com.example.stroke_management_7.mqtt.customLineDataSet
+import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 const val clientId = "AndroidMqttClient"
 val topicArray = arrayOf(
@@ -113,22 +114,11 @@ class MainActivity : AppCompatActivity() {
         }
         //thiết lập connection
         binding.btnDisconnect.isVisible = false
-        binding.scrollView.isVisible = false
+        binding.scrollView.isVisible = true
         binding.btnSubscribe.isVisible = false
         binding.btnConnect.isEnabled = false
 
-        //thiêt lập quan sát vẽ biểu đồ
-        heartRateLiveData.observe(this, heartRateObserver)
-        tempLiveData.observe(this, tempObserver)
-        accXLiveData.observe(this, accXObserver)
-        accYLiveData.observe(this, accYObserver)
-        accZLiveData.observe(this, accZObserver)
-        gyroXLiveData.observe(this, gyroXObserver)
-        gyroYLiveData.observe(this, gyroYObserver)
-        gyroZLiveData.observe(this, gyroZObserver)
-        eulerXLiveData.observe(this, eulerXObserver)
-        eulerYLiveData.observe(this, eulerYObserver)
-        eulerZLiveData.observe(this, eulerZObserver)
+
         binding.edtIpAdress.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 binding.btnConnect.isEnabled = false
@@ -144,93 +134,52 @@ class MainActivity : AppCompatActivity() {
                 }
                 binding.btnConnect.setOnClickListener {
                     val host = binding.edtIpAdress.text.toString().trim()
-                    connection =
-                        Connection.createConnection(clientId, host, this@MainActivity, binding)
-                    connection!!.connect(topicArray, qos, topicLiveData)
+                    lifecycleScope.launch {
+                        connection =
+                            Connection.createConnection(
+                                clientId,
+                                host,
+                                this@MainActivity,
+                                binding
+                            )
+                        connection!!.connect()
+                    }
                 }
             }
         })
         binding.btnDisconnect.setOnClickListener {
-            connection!!.disconnect()
+            lifecycleScope.launch {
+                connection!!.disconnect()
+            }
         }
         binding.btnSubscribe.setOnClickListener {
-            connection!!.subscribe(topicArray, qos, topicLiveData)
+            lifecycleScope.launch {
+                connection!!.subscribe(topicArray, qos, topicLiveData)
+            }
         }
 
+        observeLiveData()
+    }
+
+    private fun observeLiveData() {
+        heartRateLiveData.observe(this) { updateChart(binding.chartHeartRate, it, "Heart Rate") }
+        tempLiveData.observe(this) { updateChart(binding.chartTemp, it, "Temperature") }
+        accXLiveData.observe(this) { updateChart(binding.chartAccelX, it, "Acc X") }
+        accYLiveData.observe(this) { updateChart(binding.chartAccelY, it, "Acc Y") }
+        accZLiveData.observe(this) { updateChart(binding.chartAccelZ, it, "Acc Z") }
+        gyroXLiveData.observe(this) { updateChart(binding.chartGyroX, it, "Gyro X") }
+        gyroYLiveData.observe(this) { updateChart(binding.chartGyroY, it, "Gyro Y") }
+        gyroZLiveData.observe(this) { updateChart(binding.chartGyroZ, it, "Gyro Z") }
+        eulerXLiveData.observe(this) { updateChart(binding.chartEulerX, it, "Euler X") }
+        eulerYLiveData.observe(this) { updateChart(binding.chartEulerY, it, "Euler Y") }
+        eulerZLiveData.observe(this) { updateChart(binding.chartEulerZ, it, "Euler Z") }
 
     }
 
-    override fun onPause() {
-        super.onPause()
 
-        //thiêt lập quan sát vẽ biểu đồ
-        heartRateLiveData.observe(this, heartRateObserver)
-        tempLiveData.observe(this, tempObserver)
-        accXLiveData.observe(this, accXObserver)
-        accYLiveData.observe(this, accYObserver)
-        accZLiveData.observe(this, accZObserver)
-        gyroXLiveData.observe(this, gyroXObserver)
-        gyroYLiveData.observe(this, gyroYObserver)
-        gyroZLiveData.observe(this, gyroZObserver)
-        eulerXLiveData.observe(this, eulerXObserver)
-        eulerYLiveData.observe(this, eulerYObserver)
-        eulerZLiveData.observe(this, eulerZObserver)
-    }
-
-    private val heartRateObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "Heart Rate")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartHeartRate, lineDataSet)
-    }
-    private val tempObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "Temperature")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartTemp, lineDataSet)
-    }
-    private val accXObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "AccelX")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartAccelX, lineDataSet)
-    }
-    private val accYObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "AccelY")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartAccelY, lineDataSet)
-    }
-    private val accZObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "AccelZ")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartAccelZ, lineDataSet)
-    }
-    private val gyroXObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "GyroX")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartGyroX, lineDataSet)
-    }
-    private val gyroYObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "GyroY")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartGyroY, lineDataSet)
-    }
-    private val gyroZObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "GyroZ")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartGyroZ, lineDataSet)
-    }
-    private val eulerXObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "EulerX")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartEulerX, lineDataSet)
-    }
-    private val eulerYObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "EulerY")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartEulerY, lineDataSet)
-    }
-    private val eulerZObserver = Observer<ArrayList<Entry>> { dataEntries ->
-        val lineDataSet = LineDataSet(dataEntries, "EulerZ")
-        customLineDataSet(lineDataSet)
-        connection?.showChart(binding.chartEulerZ, lineDataSet)
+    private fun updateChart(lineChart: LineChart, entries: ArrayList<Entry>, label: String) {
+        val lineDataSet = customLineDataSet(entries, label)
+        connection?.showChart(lineChart, lineDataSet)
     }
 
 }

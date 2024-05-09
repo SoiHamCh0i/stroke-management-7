@@ -31,6 +31,7 @@ class MqttCallbackHandler(
     private val eulerXEntries = ArrayList<Entry>()
     private val eulerYEntries = ArrayList<Entry>()
     private val eulerZEntries = ArrayList<Entry>()
+    private val countEntries = ArrayList<Entry>()
 
     override fun connectionLost(cause: Throwable?) {
         if (cause != null) {
@@ -46,7 +47,6 @@ class MqttCallbackHandler(
                 LocalTime.now().format(DateTimeFormatter.ofPattern("HHmmss")).toFloatOrNull()
                     ?: return
             val payload = message?.payload?.toString(Charsets.UTF_8)?.toFloatOrNull() ?: return
-            suspend {
             when (topic) {
                 topicArray[0] -> {
                     if (heartRateEntries.size == 15) {
@@ -54,7 +54,7 @@ class MqttCallbackHandler(
                     }
                     heartRateEntries.add(Entry(timestamp, payload))
                     topicLiveData[0].postValue(heartRateEntries)
-                    binding.tvCurrentHeartRate.text = "$payload BPM"
+                    binding.tvCurrentHeartRate.text = "$payload Hz"
                 }
 
                 topicArray[1] -> {
@@ -141,8 +141,8 @@ class MqttCallbackHandler(
                 else -> {
                     //Do nothing
                 }
-            }}
-            Log.i(TAG, "Retrieve successfully")
+            }
+
         } catch (e: MqttException) {
             e.printStackTrace()
             Log.e(TAG, "Exception for message arrived")
