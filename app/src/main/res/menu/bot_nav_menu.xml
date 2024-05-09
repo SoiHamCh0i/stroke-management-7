@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bot_person"
+        android:icon="@drawable/user"
+        android:title="User" />
+    <item
+        android:id="@+id/bot_location"
+        android:icon="@drawable/location"
+        android:title="Location" />
+    <item
+        android:id="@+id/bot_setting"
+        android:icon="@drawable/setting"
+        android:title="Settings" />
+
+</menu>

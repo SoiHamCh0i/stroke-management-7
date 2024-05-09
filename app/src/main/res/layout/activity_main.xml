@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    tools:context=".activities.MainActivity"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@drawable/hust_stroke_management"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
+        android:src="@drawable/hust_logo"
+        tools:ignore="ContentDescription" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layoutConnection"
+        android:layout_below="@+id/topAppBar"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_8dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:id="@+id/tvCurrentHeartRate"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_144dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="750.0       Hz"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartHeartRate"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_144dp"
+                    android:layout_weight="3">
+
+                </com.github.mikephil.charting.charts.LineChart>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8dp"
+                android:text="Heart Rate"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_8dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:id="@+id/tvCurrentTemp"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_144dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="37.5        ℃"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartTemp"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_144dp"
+                    android:layout_weight="3">
+
+                </com.github.mikephil.charting.charts.LineChart>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8dp"
+                android:text="Temperature"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="vertical">
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chartAccelX"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_144dp">
+
+                    </com.github.mikephil.charting.charts.LineChart>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chartAccelY"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_144dp"
+                        android:layout_marginTop="@dimen/_16dp"
+                        android:layout_weight="1">
+
+                    </com.github.mikephil.charting.charts.LineChart>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chartAccelZ"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_144dp"
+                        android:layout_marginTop="@dimen/_16dp"
+                        >
+
+                    </com.github.mikephil.charting.charts.LineChart>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16dp"
+                    android:text="Acceleration"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chartGyroX"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_144dp" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chartGyroY"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_144dp"
+                        android:layout_marginTop="@dimen/_8dp">
+
+                    </com.github.mikephil.charting.charts.LineChart>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chartGyroZ"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_144dp"
+                        android:layout_marginTop="@dimen/_8dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16dp"
+                    android:text="Gyroscope"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartEulerX"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_144dp" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartEulerY"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_144dp"
+                    android:layout_marginTop="@dimen/_16dp"
+                    android:layout_weight="1"/>
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartEulerZ"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_144dp"
+                    android:layout_marginTop="@dimen/_16dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16dp"
+                    android:text="Euler"
+                    android:layout_marginEnd="24dp"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layoutConnection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bot_nav_menu"
+        android:layout_margin="@dimen/_8dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edtIpAdress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="3"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="IpAddress"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/btnConnect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="2"
+            android:backgroundTint="@drawable/cus_enable_button"
+            android:text="Connect" />
+
+        <Button
+            android:id="@+id/btnSubscribe"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:backgroundTint="@color/Red"
+            android:text="Subscribe" />
+
+        <Button
+            android:id="@+id/btnDisconnect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:backgroundTint="@color/Red"
+            android:text="Disconnect" />
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bot_nav_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/cus_bot_nav_shape"
+        app:elevation="16dp"
+        app:itemActiveIndicatorStyle="@android:color/transparent"
+        app:itemIconTint="@drawable/cus_bot_nav_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:itemTextColor="@drawable/cus_bot_nav_selector"
+        app:menu="@menu/bot_nav_menu" />
+
+
+</RelativeLayout>

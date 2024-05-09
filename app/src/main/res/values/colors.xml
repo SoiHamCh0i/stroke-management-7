@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="Red">#BF1C2D</color>
+    <color name="stoke_color">#797979</color>
+    <color name="lineColor">#e8bc05</color>
+
+</resources>
