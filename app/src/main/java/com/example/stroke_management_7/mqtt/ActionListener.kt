@@ -1,21 +1,11 @@
 package com.example.stroke_management_7.mqtt
 
-<<<<<<< HEAD
-import android.annotation.SuppressLint
-=======
->>>>>>> e975c9c (Initial commit)
 import android.content.Context
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
-<<<<<<< HEAD
-import com.example.stroke_management_7.activities.topicArray
 import com.example.stroke_management_7.databinding.ActivityMainBinding
-
-=======
-import com.example.stroke_management_7.databinding.ActivityMainBinding
->>>>>>> e975c9c (Initial commit)
 import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttToken
@@ -90,21 +80,12 @@ class ActionListener(
         disconnectedBufferOptions.isDeleteOldestMessages = false
         connection.getClient().setBufferOpts(disconnectedBufferOptions)
 
-<<<<<<< HEAD
-        handler.post {
-            Toast.makeText(context, "Connected!", Toast.LENGTH_SHORT).show()
-        }
-        binding.edtIpAdress.isEnabled=false
-        binding.btnConnect.isVisible = false
-        binding.btnSubscribe.isVisible=true
-=======
         binding.edtIpAdress.isEnabled=false
         binding.btnConnect.isVisible = false
         binding.btnSubscribe.isVisible=true
         handler.post {
             Toast.makeText(context, "Connected!", Toast.LENGTH_SHORT).show()
         }
->>>>>>> e975c9c (Initial commit)
         Log.w(TAG, "Connected From Action Listener!")
     }
 

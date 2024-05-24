@@ -14,14 +14,10 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-<<<<<<< HEAD
-import org.eclipse.paho.android.service.MqttAndroidClient
-=======
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttToken
->>>>>>> e975c9c (Initial commit)
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttException
 
@@ -44,12 +40,8 @@ class Connection private constructor(
             binding: ActivityMainBinding
         ): Connection {
             val uri = "tcp://$host:1883"
-<<<<<<< HEAD
-            val client = MqttAndroidClient(context, uri, clientId)
-=======
             val client =
                 MqttAndroidClient(context, uri, clientId)
->>>>>>> e975c9c (Initial commit)
             return Connection(
                 clientId,
                 host,
@@ -66,21 +58,10 @@ class Connection private constructor(
     }
 
     @Throws(MqttException::class)
-<<<<<<< HEAD
-    fun connect(
-        topicArray: Array<String>,
-        qos: IntArray,
-        topicLiveData: ArrayList<MutableLiveData<ArrayList<Entry>>>
-    ) {
-        if (this.getClient().isConnected) {
-            Log.i(TAG, "Client is already connected!")
-            return
-=======
     suspend fun connect() = withContext(Dispatchers.IO) {
         if (this@Connection.getClient().isConnected) {
             Log.i(TAG, "Client is already connected!")
             return@withContext
->>>>>>> e975c9c (Initial commit)
         }
         try {
             val connOpts = MqttConnectOptions()
@@ -89,14 +70,8 @@ class Connection private constructor(
             connOpts.connectionTimeout = 80
             connOpts.keepAliveInterval = 200
 
-<<<<<<< HEAD
-            val callback = ActionListener(context, ActionListener.Action.CONNECT, this, binding)
-            this.getClient().connect(connOpts, this, callback)
-//            subscribe(topicArray,qos,topicLiveData)
-=======
             val callback = ActionListener(context, ActionListener.Action.CONNECT, this@Connection, binding)
             this@Connection.getClient().connect(connOpts, null, callback)
->>>>>>> e975c9c (Initial commit)
         } catch (e: MqttException) {
             e.printStackTrace()
             Log.e(TAG, "Exception with connection!")
@@ -106,19 +81,6 @@ class Connection private constructor(
 
 
     @Throws(MqttException::class)
-<<<<<<< HEAD
-    fun subscribe(
-        topicArray: Array<String>,
-        qos: IntArray,
-        topicLiveData: ArrayList<MutableLiveData<ArrayList<Entry>>>
-    ) {
-        try {
-            val callback =
-                ActionListener(this.context, ActionListener.Action.SUBSCRIBE, this, binding)
-            this.getClient()
-                .setCallback(MqttCallbackHandler(context,topicArray, topicLiveData, binding))
-            this.getClient().subscribe(topicArray, qos, context, callback)
-=======
     suspend fun subscribe(
         topicArray: Array<String>,
         qos: IntArray,
@@ -135,7 +97,6 @@ class Connection private constructor(
             this@Connection.getClient()
                 .setCallback(MqttCallbackHandler(context, topicArray, topicLiveData, binding))
             this@Connection.getClient().subscribe(topicArray, qos, null, callback)
->>>>>>> e975c9c (Initial commit)
         } catch (e: MqttException) {
             throw MqttException(e)
 
@@ -143,16 +104,6 @@ class Connection private constructor(
     }
 
     @Throws(MqttException::class)
-<<<<<<< HEAD
-    fun disconnect() {
-        val callback = ActionListener(
-            this.context,
-            ActionListener.Action.DISCONNECT,
-            this,
-            binding
-        )
-        this.getClient().disconnect(context,callback)
-=======
     suspend fun disconnect(): IMqttToken? = withContext(Dispatchers.IO){
         val callback = ActionListener(
             this@Connection.context,
@@ -161,7 +112,6 @@ class Connection private constructor(
             binding
         )
         this@Connection.getClient().disconnect(context, callback)
->>>>>>> e975c9c (Initial commit)
     }
 
     fun showChart(lineChart: LineChart, lineDataSet: LineDataSet) {
@@ -193,28 +143,16 @@ class Connection private constructor(
         lineChart.invalidate()
     }
 }
-<<<<<<< HEAD
-
-fun customLineDataSet(lineDataSet: LineDataSet) {
-=======
 fun customLineDataSet(dataEntries:ArrayList<Entry>,label:String):LineDataSet {
     val lineDataSet = LineDataSet(dataEntries, label)
->>>>>>> e975c9c (Initial commit)
     lineDataSet.lineWidth = 2f
     lineDataSet.setDrawCircleHole(false)
     lineDataSet.circleRadius = 3f
     lineDataSet.valueTextSize = 0f
-<<<<<<< HEAD
-    lineDataSet.color = Color.rgb(232,188,5)
-    lineDataSet.setCircleColor(Color.rgb(232,188,5))
-
-
-=======
     lineDataSet.color = Color.rgb(232, 188, 5)
     lineDataSet.setCircleColor(Color.rgb(232, 188, 5))
 
     return lineDataSet
->>>>>>> e975c9c (Initial commit)
 }
 
 fun customLegend(legend: Legend?) {
