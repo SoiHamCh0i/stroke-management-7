@@ -17,7 +17,6 @@ import com.example.stroke_management_7.mqtt.customLineDataSet
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 const val clientId = "AndroidMqttClient"
