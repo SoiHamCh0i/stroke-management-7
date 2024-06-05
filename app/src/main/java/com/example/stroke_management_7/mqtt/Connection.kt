@@ -115,32 +115,21 @@ class Connection private constructor(
     }
 
     fun showChart(lineChart: LineChart, lineDataSet: LineDataSet) {
-        val dataSet = ArrayList<ILineDataSet>()
-        dataSet.add(lineDataSet)
+        val data = LineData(lineDataSet).apply { setValueFormatter(MyValueFormatter()) }
 
-        val legend = lineChart.legend
-        customLegend(legend)
-
-        val description = lineChart.description
-        description.text = ""
-        customDescription(description)
-
-        val xAxis = lineChart.xAxis
-        val yAxisLeft = lineChart.axisLeft
-        val yAxisRight = lineChart.axisRight
-        yAxisLeft.valueFormatter = MyLeftYAxisValueFormatter()
-        xAxis.valueFormatter = MyAxisValueFormatter()
-        yAxisRight.valueFormatter = MyYAxisValueFormatter()
-//custom đồ thị
-        val data = LineData(lineDataSet)
-        data.setValueFormatter(MyValueFormatter())
-        data.notifyDataChanged()
-        lineChart.setDrawGridBackground(false)
-        lineChart.setBorderColor(Color.BLACK)
-        lineChart.setBorderWidth(8f)
-        lineChart.data = data
-        lineChart.notifyDataSetChanged()
-        lineChart.invalidate()
+        lineChart.apply {
+            description.text=""
+            setDrawGridBackground(false)
+            setBorderColor(Color.BLACK)
+            setBorderWidth(8f)
+            legend.apply { customLegend(this) }
+            description.apply { customDescription(this) }
+            xAxis.valueFormatter = MyAxisValueFormatter()
+            axisLeft.valueFormatter = MyLeftYAxisValueFormatter()
+            axisRight.valueFormatter = MyYAxisValueFormatter()
+            this.data = data
+            invalidate()
+        }
     }
 }
 fun customLineDataSet(dataEntries:ArrayList<Entry>,label:String):LineDataSet {
@@ -156,19 +145,23 @@ fun customLineDataSet(dataEntries:ArrayList<Entry>,label:String):LineDataSet {
 }
 
 fun customLegend(legend: Legend?) {
-    legend?.isEnabled = true
-    legend?.textColor = Color.BLACK
-    legend?.textSize = 15f
-    legend?.form = Legend.LegendForm.LINE
-    legend?.formSize = 20f
-    legend?.xEntrySpace = 10f
-    legend?.formToTextSpace = 5f
+    legend?.apply {
+        isEnabled = true
+        textColor = Color.BLACK
+        textSize = 15f
+        form = Legend.LegendForm.LINE
+        formSize = 20f
+        xEntrySpace = 10f
+        formToTextSpace = 5f
+    }
 }
 
 fun customDescription(description: Description?) {
-    description?.yOffset = 0f
-    description?.textColor = Color.BLACK
-    description?.textSize = 20f
+    description?.apply {
+        yOffset = 0f
+        textColor = Color.BLACK
+        textSize = 20f
+    }
 }
 
 class MyYAxisValueFormatter : ValueFormatter() {
@@ -179,7 +172,7 @@ class MyYAxisValueFormatter : ValueFormatter() {
 
 class MyAxisValueFormatter : ValueFormatter() {
     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-        axis!!.setLabelCount(5, true)
+        axis?.setLabelCount(5, true)
         return if (value.toInt().toString().length == 5) '0' + value.toInt().toString()
         else value.toInt().toString()
     }

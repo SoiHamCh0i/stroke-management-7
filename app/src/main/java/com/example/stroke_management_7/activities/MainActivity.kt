@@ -141,19 +141,19 @@ class MainActivity : AppCompatActivity() {
                                 this@MainActivity,
                                 binding
                             )
-                        connection!!.connect()
+                        connection?.connect()
                     }
                 }
             }
         })
         binding.btnDisconnect.setOnClickListener {
             lifecycleScope.launch {
-                connection!!.disconnect()
+                connection?.disconnect()
             }
         }
         binding.btnSubscribe.setOnClickListener {
             lifecycleScope.launch {
-                connection!!.subscribe(topicArray, qos, topicLiveData)
+                connection?.subscribe(topicArray, qos, topicLiveData)
             }
         }
 
